@@ -11,10 +11,13 @@ qemu-img convert -f vmdk -O raw Kali-Linux-2020.1-vbox-amd64-disk001.vmdk disk.r
 # Virt-Customize Magic
 
 virt-customize -a disk.raw \
+               --run-command "apt-key adv --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys 6A030B21BA07F4FB" \
+               --append-line "/etc/apt/sources.list.d/google-compute-engine.list:deb http://packages.cloud.google.com/apt google-compute-engine-buster-stable main" \
+               --run-command "apt update" \
                --uninstall gdm3 \
-               --install cloud-init,kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies \
-               --run-command "systemctl enable cloud-init" \
+               --install google-osconfig-agent,kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies \
                --run-command "systemctl enable ssh" \
+               --run-command "systemctl enable google-osconfig-agent.service" \
                --run-command "systemctl set-default graphical.target"
                --edit "/etc/default/grub:s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" \
                --edit "/etc/default/grub:s/quiet/console=ttyS0,38400n8d/"
