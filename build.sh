@@ -13,7 +13,7 @@ virt-customize -a disk.raw \
                --edit "/etc/default/grub:s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" \
                --edit "/etc/default/grub:s/quiet/console=ttyS0,38400n8d/" \
                --run-command "/usr/sbin/update-grub" \
-               --run-command "apt-key adv --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys 6A030B21BA07F4FB" \
+               --run-command "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -" \
                --write "/etc/apt/sources.list.d/google-compute-engine.list:deb http://packages.cloud.google.com/apt google-compute-engine-buster-stable main" \
                --write "/etc/apt/sources.list.d/debian.list:deb http://deb.debian.org/debian buster main contrib non-free" \
                --run-command "apt update" \
@@ -24,9 +24,9 @@ virt-customize -a disk.raw \
                --run-command "systemctl enable google-osconfig-agent.service" \
                --run-command "systemctl set-default graphical.target" \
                --run-command "systemctl enable xrdp-sesman" \
-               --run-command "systemctl enable xrdp"
+               --run-command "systemctl enable xrdp" \
                --run-command "userdel -r kali" \
-               --firstboot-command "sleep 30 && apt upgrade -y"
+               --firstboot-command "sleep 300 && apt upgrade -y"
 
 virt-sysprep -a disk.raw
 
