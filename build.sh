@@ -15,14 +15,18 @@ virt-customize -a disk.raw \
                --run-command "/usr/sbin/update-grub" \
                --run-command "apt-key adv --keyserver hkp://pool.sks-keyservers.net:80 --recv-keys 6A030B21BA07F4FB" \
                --write "/etc/apt/sources.list.d/google-compute-engine.list:deb http://packages.cloud.google.com/apt google-compute-engine-buster-stable main" \
+               --write "/etc/apt/sources.list.d/debian.list:deb http://deb.debian.org/debian buster main contrib non-free" \
                --run-command "apt update" \
-               --uninstall gdm3 \
-               --install google-osconfig-agent,kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies,xrdp \
+               --uninstall gdm3,virtualbox-guest-dkms,virtualbox-guest-utils \
+               --install kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies,xrdp \
+               --install google-osconfig-agent,python-google-compute-engine,python3-google-compute-engine,google-compute-engine-oslogin,google-compute-engine \
                --run-command "systemctl enable ssh" \
                --run-command "systemctl enable google-osconfig-agent.service" \
                --run-command "systemctl set-default graphical.target" \
                --run-command "systemctl enable xrdp-sesman" \
                --run-command "systemctl enable xrdp"
+               --run-command "userdel -r kali" \
+               --firstboot-command "sleep 30 && apt upgrade -y"
 
 virt-sysprep -a disk.raw
 
