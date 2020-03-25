@@ -20,6 +20,7 @@ virt-customize -a disk.raw \
                --write "/etc/apt/sources.list.d/debian.list:deb http://deb.debian.org/debian buster main contrib non-free" \
                --write "/etc/apt/sources.list.d/docker.list:deb https://download.docker.com/linux/debian buster stable" \
                --run-command "apt update" \
+               --run-command "DEBIAN_FRONTEND=noninteractive apt-get -y upgrade apt upgrade -y" \
                --uninstall gdm3,virtualbox-guest-dkms,virtualbox-guest-utils,docker,docker-engine,docker.io \
                --install kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies,xrdp \
                --install google-osconfig-agent,python-google-compute-engine,python3-google-compute-engine,google-compute-engine-oslogin,google-compute-engine \
