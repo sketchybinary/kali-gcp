@@ -12,7 +12,7 @@ fi
 echo "Extracting disk image from OVA"
 tar xvf kali-linux-2020.1-vbox-amd64.ova
 echo "Converting vmdk to raw"
-qemu-img convert -f vmdk -O raw Kali-Linux-2020.1-vbox-amd64-disk001.vmdk disk.raw
+qemu-img convert -p -f vmdk -O raw Kali-Linux-2020.1-vbox-amd64-disk001.vmdk disk.raw
 
 # Virt-Customize Magic
 echo "Getting down to business with virt-customize"
