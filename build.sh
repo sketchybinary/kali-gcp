@@ -30,6 +30,10 @@ virt-customize -a disk.raw \
                --run-command 'curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64' \
                --run-command 'chmod +x minikube' \
                --run-command 'install minikube /usr/local/bin/' \
+               --run-command 'curl -LO https://github.com/derailed/popeye/releases/download/v0.6.1/popeye_0.6.1_Linux_x86_64.tar.gz' \
+               --run-command 'tar zxvf popeye_0.6.1_Linux_x86_64.tar.gz' \
+               --run-command 'chmod +x popeye' \
+               --run-command 'install popeye /usr/local/bin/' \
                --run-command "systemctl enable ssh" \
                --run-command "systemctl enable google-osconfig-agent.service" \
                --run-command "systemctl enable docker" \
