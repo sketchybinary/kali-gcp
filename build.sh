@@ -34,6 +34,11 @@ virt-customize -a disk.raw \
                --run-command 'tar zxvf popeye_0.6.1_Linux_x86_64.tar.gz' \
                --run-command 'chmod +x popeye' \
                --run-command 'install popeye /usr/local/bin/' \
+               --run-command 'curl -fsSLO "https://github.com/kubernetes-sigs/krew/releases/download/v0.3.3/krew.{tar.gz,yaml}"' \
+               --run-command 'tar zxvf krew.tar.gz' \
+               --run-command './krew_linux_amd64 install --manifest=krew.yaml --archive=krew.tar.gz' \
+               --run-command './krew_linux_amd64 update' \
+               --run-command 'curl -sfL https://get.k3s.io | sh -' \
                --run-command "systemctl enable ssh" \
                --run-command "systemctl enable google-osconfig-agent.service" \
                --run-command "systemctl enable docker" \
