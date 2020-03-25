@@ -4,7 +4,9 @@ sudo dnf update -y
 sudo dnf install wget libguestfs libguestfs-tools-c
 
 # This URL will need to be updated
-wget https://images.offensive-security.com/virtual-images/kali-linux-2020.1-vbox-amd64.ova
+if ! (echo "e83f02b4a3e89e342e97a741dc09bfb5050b826c763441b65f1a8e1b5e5184b8  Kali-2020.1-cloud-amd64.tar.gz" | sha256sum --check --status); then
+    wget https://images.offensive-security.com/virtual-images/kali-linux-2020.1-vbox-amd64.ova
+fi
 tar xvf kali-linux-2020.1-vbox-amd64.ova
 qemu-img convert -f vmdk -O raw Kali-Linux-2020.1-vbox-amd64-disk001.vmdk disk.raw
 
@@ -20,7 +22,7 @@ virt-customize -a disk.raw \
                --write "/etc/apt/sources.list.d/debian.list:deb http://deb.debian.org/debian buster main contrib non-free" \
                --write "/etc/apt/sources.list.d/docker.list:deb https://download.docker.com/linux/debian buster stable" \
                --run-command "apt update" \
-               --run-command "DEBIAN_FRONTEND=noninteractive apt-get -y upgrade apt upgrade -y" \
+               --run-command "DEBIAN_FRONTEND=noninteractive apt upgrade -y" \
                --uninstall gdm3,virtualbox-guest-dkms,virtualbox-guest-utils,docker,docker-engine,docker.io \
                --install kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies,xrdp \
                --install google-osconfig-agent,python-google-compute-engine,python3-google-compute-engine,google-compute-engine-oslogin,google-compute-engine \
