@@ -4,8 +4,8 @@ sudo dnf update -y
 sudo dnf install wget libguestfs libguestfs-tools-c
 
 # This URL will need to be updated
-if ! (echo "e83f02b4a3e89e342e97a741dc09bfb5050b826c763441b65f1a8e1b5e5184b8  Kali-2020.1-cloud-amd64.tar.gz" | sha256sum --check --status); then
-    rm Kali-2020.1-cloud-amd64.tar.gz || true
+if ! (echo "1f1f480c10305c8bb72516fa7060303311e18a29009a57689780a45a7e22880a  kali-linux-2020.1-vbox-amd64.ova" | sha256sum --check --status); then
+    rm kali-linux-2020.1-vbox-amd64.ova || true
     wget https://images.offensive-security.com/virtual-images/kali-linux-2020.1-vbox-amd64.ova
 fi
 tar xvf kali-linux-2020.1-vbox-amd64.ova
