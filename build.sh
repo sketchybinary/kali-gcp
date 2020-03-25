@@ -27,6 +27,9 @@ virt-customize -a disk.raw \
                --run-command 'curl -L "https://github.com/docker/compose/releases/download/1.25.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose' \
                --run-command "chmod +x /usr/local/bin/docker-compose" \
                --run-command "ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose" \
+               --run-command 'curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64' \
+               --run-command 'chmod +x minikube' \
+               --run-command 'install minikube /usr/local/bin/' \
                --run-command "systemctl enable ssh" \
                --run-command "systemctl enable google-osconfig-agent.service" \
                --run-command "systemctl enable docker" \
