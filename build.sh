@@ -14,14 +14,18 @@ virt-customize -a disk.raw \
                --edit "/etc/default/grub:s/quiet/console=ttyS0,38400n8d/" \
                --run-command "/usr/sbin/update-grub" \
                --run-command "curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -" \
+               --run-command "curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -" \
                --write "/etc/apt/sources.list.d/google-compute-engine.list:deb http://packages.cloud.google.com/apt google-compute-engine-buster-stable main" \
                --write "/etc/apt/sources.list.d/debian.list:deb http://deb.debian.org/debian buster main contrib non-free" \
+               --write "/etc/apt/sources.list.d/docker.list:deb https://download.docker.com/linux/debian buster stable" \
                --run-command "apt update" \
-               --uninstall gdm3,virtualbox-guest-dkms,virtualbox-guest-utils \
+               --uninstall gdm3,virtualbox-guest-dkms,virtualbox-guest-utils,docker,docker-engine,docker.io \
                --install kali-defaults,kali-root-login,desktop-base,xfce4,xfce4-places-plugin,xfce4-goodies,xrdp \
                --install google-osconfig-agent,python-google-compute-engine,python3-google-compute-engine,google-compute-engine-oslogin,google-compute-engine \
+               --install docker-ce \
                --run-command "systemctl enable ssh" \
                --run-command "systemctl enable google-osconfig-agent.service" \
+               --run-command "systemctl enable docker" \
                --run-command "systemctl set-default graphical.target" \
                --run-command "systemctl enable xrdp-sesman" \
                --run-command "systemctl enable xrdp" \
