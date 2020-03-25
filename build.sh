@@ -1,17 +1,21 @@
 #!/bin/bash
-
+echo "Updating your host"
 sudo dnf update -y
 sudo dnf install wget libguestfs libguestfs-tools-c
 
 # This URL will need to be updated
+echo "Verifying base Kali OVA and downloading again if necessary"
 if ! (echo "1f1f480c10305c8bb72516fa7060303311e18a29009a57689780a45a7e22880a  kali-linux-2020.1-vbox-amd64.ova" | sha256sum --check --status); then
     rm kali-linux-2020.1-vbox-amd64.ova || true
     wget https://images.offensive-security.com/virtual-images/kali-linux-2020.1-vbox-amd64.ova
 fi
+echo "Extracting disk image from OVA"
 tar xvf kali-linux-2020.1-vbox-amd64.ova
+echo "Converting vmdk to raw"
 qemu-img convert -f vmdk -O raw Kali-Linux-2020.1-vbox-amd64-disk001.vmdk disk.raw
 
 # Virt-Customize Magic
+echo "Getting down to business with virt-customize"
 # shellcheck disable=SC2016
 virt-customize -a disk.raw \
                --edit "/etc/default/grub:s/GRUB_TIMEOUT=5/GRUB_TIMEOUT=1/" \
@@ -52,8 +56,13 @@ virt-customize -a disk.raw \
                --run-command "userdel -r kali" \
                --firstboot-command "sleep 300 && apt upgrade -y"
 
+echo "Final sysprep on new image"
 virt-sysprep -a disk.raw
 
-tar --format=oldgnu -Sczf Kali-2020.1-cloud-amd64.tar.gz disk.raw 
+echo "Converting to GCP friendly tarball"
+tar --format=oldgnu -Sczf Kali-2020.1-cloud-amd64.tar.gz disk.raw
+echo "Uploading to GCP. If this fails, run 'gcloud auth login' and rerun the commands manually"
+set -x
 gsutil cp  Kali-2020.1-cloud-amd64.tar.gz gs://darkwolf-image-uploads/Kali-2020.1-cloud-amd64.tar.gz
+gcloud compute image delete kali-2020-1-cloud
 gcloud compute images create kali-2020-1-cloud --source-uri gs://darkwolf-image-uploads/Kali-2020.1-cloud-amd64.tar.gz
